@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "type_conv.h"
 #include "hash_table.h"
@@ -8,6 +9,18 @@ int main(void) {
 
 	printf("hash_table info: %zd %zd\n", hash_table_size(ht), hash_table_n(ht));
 	hash_table_insert(ht, "abc", "ABC");
+
+	hash_table_insert(ht, "abc", "ABC");
+	hash_table_insert(ht, "abc", "ABC");
+	hash_table_insert(ht, "abc", "ABC");
+	hash_table_insert(ht, "abc", "ABC");
+	hash_table_insert(ht, "abc", "ABC");
+	hash_table_insert(ht, "abc", "ABC");
+	hash_table_insert(ht, "abc", "ABC");
+	hash_table_insert(ht, "abc", "ABC");
+	hash_table_insert(ht, "abc", "ABC");
+	hash_table_insert(ht, "abc", "ABC");
+
 	hash_table_insert(ht, "abc1", "ABC1");
 	hash_table_insert(ht, "abc2", "ABC2");
 	hash_table_insert(ht, "cde", "CDE");
@@ -19,8 +32,11 @@ int main(void) {
 
 	hash_table_insert(ht, "cde2", "CDE2");
 	int i;
+	char *s;
 	for(i=0; i<1000; i++) {
-		hash_table_insert(ht, int_to_str(i), int_to_str(i));
+		s = int_to_str(i);	
+		hash_table_insert(ht, s, s);
+		free(s);
 	}
 	printf("hash_table info: %zd %zd\n", hash_table_size(ht), hash_table_n(ht));
 

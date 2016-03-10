@@ -1,6 +1,6 @@
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <assert.h>
 #include "hash_table.h"
 
@@ -31,6 +31,7 @@ static unsigned long hash_func(const char *s) {
 }
 
 HashTable hash_table_create(size_t n) {
+	int i;
 	HashTable ht = malloc(sizeof(struct hash_table));
 	if(!ht) {
 		fprintf(stderr, "Fails to create hash table!");
@@ -45,6 +46,10 @@ HashTable hash_table_create(size_t n) {
 		fprintf(stderr, "Fails to create hash table!");
 		exit(EXIT_FAILURE);
 	}
+
+	for(i=0; i<ht->size; i++) {
+		ht->table[i] = NULL;
+	}
 	
 	return ht;
 }
@@ -55,6 +60,8 @@ static int hash_table_grow(HashTable ht) {
 	int i;
 	size_t new_h;
 	struct elem *e, *next;
+
+	for(i=0; i<new_size; i++) new_table[i] = NULL;
 
 	for(i = 0; i < ht->size; i++) {
 		for(e=ht->table[i]; e; e=next) {
@@ -82,14 +89,31 @@ static int hash_table_grow(HashTable ht) {
 	return 0;
 }
 
+static int hash_table_exact_search(HashTable ht, const char *key, const char *value) {
+	size_t i = hash_func(key) % (ht->size);
+
+	struct elem *e, *next;
+	for(e=ht->table[i]; e; e=next) {
+		next = e->next;
+		if(!strcmp(e->key, key) && !strcmp(e->value, value)) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 int hash_table_insert(HashTable ht, const char *key, const char *value) {
+	if(hash_table_exact_search(ht, key, value)) {
+		return 0;
+	}
+
 	size_t i = hash_func(key) % (ht->size);
 
 	struct elem *e = malloc(sizeof(struct elem));;
 	assert(e);
 
-	e->key = (char *)key;
-	e->value = (char *)value;
+	e->key = strdup(key);
+	e->value = strdup(value);
 	e->next = ht->table[i];
 	ht->table[i] = e;
 
@@ -107,6 +131,8 @@ int hash_table_destroy(HashTable ht) {
 	for(i = 0; i < ht->size; i++) {
 		for(e=ht->table[i]; e; e=next) {
 			next = e->next;
+			free(e->key);
+			free(e->value);
 			free(e);
 		}
 	}
@@ -127,6 +153,8 @@ int hash_table_delete(HashTable ht, const char *key) {
 
 	if(!strcmp(prev->key, key)) {
 		ht->table[i] = prev->next;
+		free(prev->key);
+		free(prev->value);
 		free(prev);
 		ht->n--;
 		return 0;
@@ -135,6 +163,8 @@ int hash_table_delete(HashTable ht, const char *key) {
 	for(cur=prev->next; cur; prev=cur) {
 		if(!strcmp(cur->key, key)) {
 			prev->next = cur->next;
+			free(cur->key);
+			free(cur->value);
 			free(cur);
 			ht->n--;
 			return 0;
