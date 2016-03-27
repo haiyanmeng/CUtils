@@ -1,7 +1,7 @@
 CC=gcc
 C99=c99
 CFLAGS=-g3 -Wall -pedantic
-VALGRIND_CMD=valgrind --tool=memcheck --leak-check=yes --track-origins=yes
+VALGRIND_CMD=valgrind
 
 TARGET = type_conv_test hash_table_test search_test stack_test
 
