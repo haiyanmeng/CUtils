@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdbool.h>
 
+#define print_bool(a) (a) ? "true" : "false"
+
 bool is_insert_one(const char *a, const char *b) {
 	char *p, *q;
 	for(p=(char *)a,q=(char *)b; *q; p++,q++) {
@@ -50,20 +52,20 @@ bool is_one_away_1(const char *a, const char *b) {
 
 int main() {
 	printf("Testing is_one_away:\n");
-	printf("%s %s %s\n", "pale", "ple", is_one_away("pale", "ple")?"true":"false");
-	printf("%s %s %s\n", "pale", "pales", is_one_away("pale", "pales")?"true":"false");
-	printf("%s %s %s\n", "pale", "pale", is_one_away("pale", "pale")?"true":"false");
-	printf("%s %s %s\n", "pale", "bale", is_one_away("pale", "bale")?"true":"false");
-	printf("%s %s %s\n", "pale", "bake", is_one_away("pale", "bake")?"true":"false");
-	printf("%s %s %s\n", "pale", "", is_one_away("pale", "")?"true":"false");
+	printf("%s %s %s\n", "pale", "ple", print_bool(is_one_away("pale", "ple")));
+	printf("%s %s %s\n", "pale", "pales", print_bool(is_one_away("pale", "pales")));
+	printf("%s %s %s\n", "pale", "pale", print_bool(is_one_away("pale", "pale")));
+	printf("%s %s %s\n", "pale", "bale", print_bool(is_one_away("pale", "bale")));
+	printf("%s %s %s\n", "pale", "bake", print_bool(is_one_away("pale", "bake")));
+	printf("%s %s %s\n", "pale", "", print_bool(is_one_away("pale", "")));
 
 	printf("Testing is_one_away_1:\n");
-	printf("%s %s %s\n", "pale", "ple", is_one_away_1("pale", "ple")?"true":"false");
-	printf("%s %s %s\n", "pale", "pales", is_one_away_1("pale", "pales")?"true":"false");
-	printf("%s %s %s\n", "pale", "pale", is_one_away_1("pale", "pale")?"true":"false");
-	printf("%s %s %s\n", "pale", "bale", is_one_away_1("pale", "bale")?"true":"false");
-	printf("%s %s %s\n", "pale", "bake", is_one_away_1("pale", "bake")?"true":"false");
-	printf("%s %s %s\n", "pale", "", is_one_away_1("pale", "")?"true":"false");
+	printf("%s %s %s\n", "pale", "ple", print_bool(is_one_away_1("pale", "ple")));
+	printf("%s %s %s\n", "pale", "pales", print_bool(is_one_away_1("pale", "pales")));
+	printf("%s %s %s\n", "pale", "pale", print_bool(is_one_away_1("pale", "pale")));
+	printf("%s %s %s\n", "pale", "bale", print_bool(is_one_away_1("pale", "bale")));
+	printf("%s %s %s\n", "pale", "bake", print_bool(is_one_away_1("pale", "bake")));
+	printf("%s %s %s\n", "pale", "", print_bool(is_one_away_1("pale", "")));
 	/* output:
 		Testing is_one_away:
 		pale ple true
