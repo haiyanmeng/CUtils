@@ -5,7 +5,7 @@
 
 #include "list.h"
 
-struct node *list_create(void *data, type_t type, int int_data) {
+struct node *node_create(void *data, type_t type, int int_data) {
 	struct node *node = malloc(sizeof(struct node));
 	if(!node) {
 		fprintf(stderr, "malloc failed: %s!\n", strerror(errno));
@@ -18,62 +18,87 @@ struct node *list_create(void *data, type_t type, int int_data) {
 	return node;
 }
 
-struct node *list_add(struct node *list, void *data, type_t type, int int_data) {
-	struct node *node = list_create(data, type, int_data);
-	if(!node) {
-		fprintf(stderr, "list_create failed: %s!\n", strerror(errno));
+struct list *list_create(void) {
+	struct list *list = malloc(sizeof(struct list));
+	if(!list) {
+		fprintf(stderr, "malloc failed: %s!\n", strerror(errno));
 		return NULL;
 	}
-	list->next = node;
-	return node;
+	list->head = list->tail = NULL;
+	return list;
 }
 
-void list_destroy(struct node *list) {
-	while(list) {
-		struct node *node = list->next;
-		free(list);
-		list = node;	
+int list_append(struct list*list, void *data, type_t type, int int_data) {
+	struct node *node = node_create(data, type, int_data);
+	if(!node) {
+		fprintf(stderr, "node_create failed: %s!\n", strerror(errno));
+		return -errno;
 	}
+
+	if(!list->head) {
+		list->head = list->tail = node;
+	} else {
+		list->tail->next = node;
+		list->tail = node;
+	}
+
+	return 0;
 }
 
-void list_traverse(struct node *list) {
+void list_destroy(struct list *list) {
+	struct node *node = list->head;
+	while(node) {
+		struct node *tmp = node->next;
+		free(node);
+		node = tmp;
+	}
+	free(list);
+}
+
+void list_traverse(struct list *list) {
 	size_t s = 0;
-	while(list) {
+	struct node *node = list->head;
+	while(node) {
 		s++;
-		switch(list->type) {
+		switch(node->type) {
 		case TYPE_INT:
-			fprintf(stdout, "node %zu: %d\n", s, list->int_data);
+			fprintf(stdout, "node %zu: %d\n", s, node->int_data);
 			break;
 		case TYPE_STR:
-			fprintf(stdout, "node %zu: %s\n", s, (char *)(list->data));
+			fprintf(stdout, "node %zu: %s\n", s, (char *)(node->data));
 			break;
 		default:
 			break;
 		}
-		list = list->next;	
+		node = node->next;
 	}
 }
 
-struct node *list_reverse(struct node *list) {
-	struct node *q, *s;
+int list_reverse(struct list *list) {
+	struct node *q, *s, *p;
+	p = list->head;
 
-	if(!list || !(list->next)) return list;
+	if(!p || !(p->next)) return 0;
 
-	q = list->next;
+	q = p->next;
 	if(!(q->next)) {
-		q->next = list;
-		list->next = NULL;
-		return q;
+		q->next = list->head;
+		list->head->next = NULL;
+		list->tail = list->head;
+		list->head = q;
+		return 0;
 	}
 
 	s = q->next;
-	list->next = NULL;
+	p->next = NULL;
+	list->tail = p;
 	while(s) {
-		q->next = list;
-		list = q;
+		q->next = p;
+		p = q;
 		q = s;
 		s = s->next;
 	}
-	q->next = list;
-	return q;
+	q->next = p;
+	list->head = q;
+	return 0;
 }

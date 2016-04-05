@@ -11,28 +11,30 @@ struct node {
 	struct node *next;
 };
 
+struct list {
+	struct node *head;
+	struct node *tail;
+};
+
 /* create a list
- * @param data: a pointer to the real data
- * @param type: the type of the data pointed by the data param
- * @param int_data: the integer data value
- * return the newly added node on success, return NULL on failure.
+ * return a new list on success, return NULL on failure.
  */
-struct node *list_create(void *data, type_t type, int int_data);
+struct list *list_create(void);
 
 /* insert at the end of a list
  * @param list: the tail node of a list
  * @param data: a pointer to the real data
  * @param type: the type of the data pointed by the data param
  * @param int_data: the integer data value
- * return the new tail node (i.e., the newly added node) on success, return NULL on failure.
+ * return 0 on success, return non-zero on failure.
  */
-struct node *list_add(struct node *list, void *data, type_t type, int int_data);
+int list_append(struct list*list, void *data, type_t type, int int_data);
 
 /* destroy a list */
-void list_destroy(struct node *list);
+void list_destroy(struct list*list);
 
-void list_traverse(struct node *list);
+void list_traverse(struct list*list);
 
-struct node *list_reverse(struct node *list);
+int list_reverse(struct list*list);
 
 #endif
