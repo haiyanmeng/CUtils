@@ -1,7 +1,7 @@
 #ifndef LIST_H
 #define LIST_H
 
-enum data_type {TYPE_INT, TYPE_STRING};
+enum data_type {TYPE_INT, TYPE_STR};
 typedef enum data_type type_t;
 
 struct node {

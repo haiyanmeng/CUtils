@@ -44,7 +44,7 @@ void list_traverse(struct node *list) {
 		case TYPE_INT:
 			fprintf(stdout, "node %zu: %d\n", s, list->int_data);
 			break;
-		case TYPE_STRING:
+		case TYPE_STR:
 			fprintf(stdout, "node %zu: %s\n", s, (char *)(list->data));
 			break;
 		default:
