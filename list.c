@@ -5,19 +5,21 @@
 
 #include "list.h"
 
-struct node *list_create(int data) {
+struct node *list_create(void *data, type_t type, int int_data) {
 	struct node *node = malloc(sizeof(struct node));
 	if(!node) {
 		fprintf(stderr, "malloc failed: %s!\n", strerror(errno));
 		return NULL;
 	}
 	node->data = data;
+	node->type = type;
+	node->int_data = int_data;
 	node->next = NULL;
 	return node;
 }
 
-struct node *list_add(struct node *list, int data) {
-	struct node *node = list_create(data);
+struct node *list_add(struct node *list, void *data, type_t type, int int_data) {
+	struct node *node = list_create(data, type, int_data);
 	if(!node) {
 		fprintf(stderr, "list_create failed: %s!\n", strerror(errno));
 		return NULL;
@@ -38,7 +40,16 @@ void list_traverse(struct node *list) {
 	size_t s = 0;
 	while(list) {
 		s++;
-		fprintf(stdout, "node %zu: %d\n", s, list->data);
+		switch(list->type) {
+		case TYPE_INT:
+			fprintf(stdout, "node %zu: %d\n", s, list->int_data);
+			break;
+		case TYPE_STRING:
+			fprintf(stdout, "node %zu: %s\n", s, (char *)(list->data));
+			break;
+		default:
+			break;
+		}
 		list = list->next;	
 	}
 }

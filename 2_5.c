@@ -7,8 +7,8 @@ struct node *int_to_list(int n) {
 	while(n) {
 		int a;
 		a = n%10;
-		if(!r) t = r = list_create(a);
-		else  t = list_add(t, a);
+		if(!r) t = r = list_create(NULL, TYPE_INT, a);
+		else  t = list_add(t, NULL, TYPE_INT, a);
 		n = n/10;
 	}
 	return r;
@@ -22,10 +22,15 @@ struct node *sum_lists(struct node *p, struct node *q) {
 		int a = 0, b = 0;
 		struct node *k;
 
-		if(p) a = p->data;
-		if(q) b = q->data;
+		if((p && p->type != TYPE_INT) || (q && q->type != TYPE_INT)) {
+			fprintf(stderr, "%s:%s:%d: the elements should be integer!\n", __func__, __FILE__, __LINE__);
+			return NULL;
+		}
 
-		k = list_create((a+b+flag)%10);
+		if(p) a = p->int_data;
+		if(q) b = q->int_data;
+
+		k = list_create(NULL, TYPE_INT, (a+b+flag)%10);
 		if(!k) return NULL;
 
 		flag = (a+b+flag)/10;
@@ -34,14 +39,14 @@ struct node *sum_lists(struct node *p, struct node *q) {
 		else {
 			t->next = k;
 			t = k;
-		}		
+		}
 
 		if(p) p = p->next;
 		if(q) q = q->next;
 	}
 
 	if(flag) {
-		struct node *k = list_create(1);
+		struct node *k = list_create(NULL, TYPE_INT, 1);
 		t->next = k;
 		t = k;
 	}
@@ -80,3 +85,5 @@ int main() {
 
 	return 0;
 }
+
+// gcc -g3 -std=c99 -pedantic -Wall 2_5.c list.c
