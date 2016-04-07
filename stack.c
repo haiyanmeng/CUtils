@@ -19,7 +19,7 @@ struct stack *stack_create() {
 	struct stack *s = malloc(sizeof(struct stack));
 	if(!s) {
 		fprintf(stderr, "Fails to create a stack!(errno %d: %s)\n", errno, strerror(errno));
-		exit(EXIT_FAILURE);
+		return NULL;
 	}
 
 	s->n = 0;
@@ -36,17 +36,18 @@ void stack_destroy(struct stack *s) {
 	free(s);
 }
 
-void push(struct stack *s, int data) {
+int push(struct stack *s, int data) {
 	struct node *node = malloc(sizeof(struct node));
 	if(!node) {
 		fprintf(stderr, "Fails to create a stack element!(errno %d: %s)\n", errno, strerror(errno));
-		exit(EXIT_FAILURE);
+		return -errno;
 	}
 
 	node->data = data;
 	node->next = s->top;
 	s->top = node;
 	s->n++;
+	return 0;
 }
 
 int pop(struct stack *s) {
@@ -73,4 +74,8 @@ int top(struct stack *s) {
 		exit(EXIT_FAILURE);
 	}
 	return s->top->data;
+}
+
+int is_empty(struct stack *s) {
+	return !s->n;
 }

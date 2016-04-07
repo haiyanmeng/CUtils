@@ -10,12 +10,14 @@ struct stack *stack_create();
 void stack_destroy(struct stack *s);
 	
 /* push one element onto the stack */
-void push(struct stack *s, int data);
+int push(struct stack *s, int data);
 
 /* pop one element from the stack */
 int pop(struct stack *s);
 
 /* peek the top of the stack */
 int top(struct stack *s);
+
+int is_empty(struct stack *s);
 
 #endif
