@@ -5,6 +5,7 @@
 int main() {
 	int i, n = 1000;
 	struct stack *s = stack_create();
+	assert(is_empty(s));
 	for(i=0; i<n; i++) {
 		printf("Pushing %d\n", i);
 		push(s, i);
@@ -16,6 +17,7 @@ int main() {
 		pop(s);
 	}
 
+	assert(is_empty(s));
 	stack_destroy(s);
 	return 0;
 }
