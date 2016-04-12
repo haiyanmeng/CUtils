@@ -72,3 +72,11 @@ void btree_destroy(struct btree *root) {
 	btree_destroy(root->right);	
 	free(root);
 }
+
+int btree_search(struct btree *root, struct btree *target) {
+	if(!root || !target) return 0;
+
+	if(root == target) return 1;
+
+	return btree_search(root->left, target) || btree_search(root->right, target);
+}

@@ -25,4 +25,9 @@ void btree_inorder(struct btree *root);
 
 void btree_destroy(struct btree *root);
 
+/* btree_search searches target in the root btree.
+ * return 1 if target is found, return 0 if not found.
+ */
+int btree_search(struct btree *root, struct btree *target);
+
 #endif

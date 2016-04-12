@@ -27,6 +27,11 @@ int main() {
 
 	fprintf(stdout, "inorder:\n");
 	btree_inorder(node1);
+	
+	fprintf(stdout, "btree_search(node5, node8) = %d\n", btree_search(node5, node8));	
+	fprintf(stdout, "btree_search(node4, node8) = %d\n", btree_search(node4, node8));	
 
 	btree_destroy(node1);
 }
+
+// gcc --std=c99 -pedantic -Wall binary_tree_test.c binary_tree.c
