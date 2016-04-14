@@ -85,4 +85,4 @@ int main() {
 	return 0;
 }
 
-// gcc -g3 -std=c99 -pedantic -Wall 3_5.c stack.c
+// gcc -g3 -std=c99 -pedantic -Wall -iquote ../ 3_5.c ../stack.c

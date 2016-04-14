@@ -77,4 +77,4 @@ int main() {
 	return 0;
 }
 
-// gcc -g3 -std=c99 -pedantic -Wall 2_5.c list.c
+// gcc -g3 -std=c99 -pedantic -Wall -iquote ../ 2_5.c ../list.c

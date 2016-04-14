@@ -64,4 +64,4 @@ int main() {
 	btree_destroy(node1);
 }
 
-// gcc --std=c99 -pedantic -Wall 4_8.c binary_tree.c
+// gcc --std=c99 -pedantic -Wall -iquote ../ 4_8.c ../binary_tree.c
