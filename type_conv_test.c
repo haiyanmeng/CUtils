@@ -12,3 +12,5 @@ int main(void) {
 	free(s);
 	return 0;
 }
+
+// gcc --std=c99 -pedantic -Wall type_conv_test.c type_conv.c
