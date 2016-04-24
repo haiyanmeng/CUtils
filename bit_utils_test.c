@@ -8,8 +8,8 @@ void neg_value_test(int a) {
 	assert(-a == neg_value(a));
 }
 
-void count_one_test(int a) {
-	printf("count_one(%d) = %d\n", a, count_one(a));
+void count_one_test(unsigned long a) {
+	printf("count_one(%lu) = %d\n", a, count_one(a));
 }
 
 int main(void) {
