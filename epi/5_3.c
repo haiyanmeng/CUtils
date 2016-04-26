@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "bit_utils.h"
 
-unsigned long reverse_bits(unsigned long x) {
+long reverse_bits(long x) {
 	int w = sizeof(x) * 8;
 	int i;
 	for(i=0; i<w/2; i++) {
@@ -10,7 +10,7 @@ unsigned long reverse_bits(unsigned long x) {
 	return x;
 }
 
-void reverse_bits_test(unsigned long x) {
+void reverse_bits_test(long x) {
 	print_bits(x);
 	printf("\n");
 	printf("reverse_bits(%lx) = %lx\n", x, reverse_bits(x));
@@ -19,10 +19,12 @@ void reverse_bits_test(unsigned long x) {
 }
 
 int main(void) {
-	unsigned long x;
+	long x;
 	x = 0xFF;
 	reverse_bits_test(x);
 	x = 0xFF343576;
 	reverse_bits_test(x);
 	return 0;
 }
+
+// gcc -g3 -std=c99 -pedantic -Wall -iquote .. ../bit_utils.h 5_3.c  ../bit_utils.c

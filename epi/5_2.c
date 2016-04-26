@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "bit_utils.h"
 
-void swap_bits_test(unsigned long x, int a, int b) {
+void swap_bits_test(long x, int a, int b) {
 	print_bits(x);
 	printf("\n");
 	printf("swap_bits(0x%lx, %d, %d) = 0x%lx\n", x, a, b, swap_bits(x, a, b));
@@ -10,7 +10,7 @@ void swap_bits_test(unsigned long x, int a, int b) {
 }
 
 int main(void) {
-	unsigned long x;
+	long x;
 	int a, b;
 	x = 0x78;
 	a = 63;

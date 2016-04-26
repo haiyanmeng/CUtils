@@ -14,10 +14,10 @@ int count_one(unsigned long a) {
 	return n;
 }
 
-unsigned long swap_bits(unsigned long x, int a, int b) {
-	if((x & (0x01UL<<a)) != (x & (0x01UL<<b))) {
-		x ^= 0x01UL<<a;
-		x ^= 0x01UL<<b;
+long swap_bits(long x, int a, int b) {
+	if((x & (0x01L<<a)) != (x & (0x01L<<b))) {
+		x ^= 0x01L<<a;
+		x ^= 0x01L<<b;
 	}
 	return x;
 }
