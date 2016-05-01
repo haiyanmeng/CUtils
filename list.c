@@ -28,6 +28,36 @@ struct list *list_create(void) {
 	return list;
 }
 
+int list_insert_front(struct list*list, void *data, type_t type, int int_data) {
+	struct node *node = node_create(data, type, int_data);
+	if(!node) {
+		fprintf(stderr, "node_create failed: %s!\n", strerror(errno));
+		return -errno;
+	}
+
+	if(!list->head) {
+		list->head = list->tail = node;
+	} else {
+		node->next = list->head;
+		list->head = node;
+	}
+
+	return 0;
+}
+
+struct list *list_attach(struct list *a, struct list *b) {
+	if(!b) return a;
+	if(!a->tail) {
+		a->head = b->head;
+		a->tail = b->tail;
+	} else {
+		a->tail->next = b->head;
+		a->tail = b->tail;
+	}
+	free(b);
+	return a;
+}
+
 int list_append(struct list*list, void *data, type_t type, int int_data) {
 	struct node *node = node_create(data, type, int_data);
 	if(!node) {

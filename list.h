@@ -1,7 +1,7 @@
 #ifndef LIST_H
 #define LIST_H
 
-enum data_type {TYPE_INT, TYPE_STR};
+enum data_type {TYPE_INT, TYPE_STR, TYPE_VOID_POINTER};
 typedef enum data_type type_t;
 
 struct node {
@@ -28,7 +28,11 @@ struct list *list_create(void);
  * @param int_data: the integer data value
  * return 0 on success, return non-zero on failure.
  */
-int list_append(struct list*list, void *data, type_t type, int int_data);
+int list_append(struct list *list, void *data, type_t type, int int_data);
+
+int list_insert_front(struct list *list, void *data, type_t type, int int_data);
+
+struct list *list_attach(struct list *a, struct list *b);
 
 /* destroy a list */
 void list_destroy(struct list*list);
