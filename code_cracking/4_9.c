@@ -3,60 +3,59 @@
 #include "bst.h"
 #include "list.h"
 
-/*
-	int arr[] = {5, 3, 2, 4, 7, 6};
-root: 5
-left: 2
-3
-left: 2 
-right: 4
-
-left = []; right = [4]
-r=[];
-m = 
-
-*/
-
 struct list *merge_seq(struct node *left_seq, struct node *right_seq) {
 	struct list *r = NULL;
 	struct node *p = NULL;
 
 	if(!left_seq && !right_seq) return NULL;
 
+	fprintf(stdout, "merge_seq r ");
 	r = list_create();
 
 	if(left_seq) {
 		struct list *m = merge_seq(left_seq->next, right_seq);
 		if(!m) {
+			fprintf(stdout, "merge_seq k ");
 			struct list *k = list_create();
+			fprintf(stdout, "merge_seq list_insert_front left_seq->data ");
 			list_insert_front(k, (void *)(left_seq->data), TYPE_VOID_POINTER, 0);
+			fprintf(stdout, "merge_seq m ");
 			m = list_create();
+			fprintf(stdout, "merge_seq list_insert_front k ");
 			list_insert_front(m, (void *) k, TYPE_VOID_POINTER, 0);
 		} else {
 			p = m->head;
 			while(p) {
+				fprintf(stdout, "merge_seq list_insert_front left_seq->data ");
 				list_insert_front((struct list *)(p->data), (void *)(left_seq->data), TYPE_VOID_POINTER, 0);
 				p = p->next;
 			}
 		}
+		fprintf(stdout, "merge_seq list_attach ");
 		list_attach(r, m);
 	}
 
 	if(right_seq) {
 		struct list *m = merge_seq(left_seq, right_seq->next);
 		if(!m) {
+			fprintf(stdout, "merge_seq k ");
 			struct list *k = list_create();
+			fprintf(stdout, "merge_seq list_insert_front right_seq->data ");
 			list_insert_front(k, (void *)(right_seq->data), TYPE_VOID_POINTER, 0);
+			fprintf(stdout, "merge_seq m ");
 			m = list_create();
+			fprintf(stdout, "merge_seq list_insert_front k ");
 			list_insert_front(m, (void *) k, TYPE_VOID_POINTER, 0);
 		} else {
 			p = m->head;
 			while(p) {
+				fprintf(stdout, "merge_seq list_insert_front right_seq->data ");
 				list_insert_front((struct list *)(p->data), (void *)(right_seq->data), TYPE_VOID_POINTER, 0);
 				p = p->next;
 			}
 		}
 	
+		fprintf(stdout, "merge_seq list_attach ");
 		list_attach(r, m);
 	}
 
@@ -68,17 +67,37 @@ struct list *merge_seqs(struct list *left_seqs, struct list *right_seqs) {
 	struct node *p = NULL, *q = NULL;
 	if(!left_seqs) return right_seqs;
 	if(!right_seqs) return left_seqs;
-
+	
+	fprintf(stdout, "merge_seqs -- r ");
 	r = list_create();
 	p = left_seqs->head;
 	while(p) {
 		q = right_seqs->head;
 		while(q) {
+			fprintf(stdout, "merge_seqs -- list_attach ");
 			list_attach(r, merge_seq(((struct list *)(p->data))->head, ((struct list *)(q->data))->head));
 			q = q->next;
 		}
 		p = p->next;
 	}
+
+	/* free left_seqs and right_seqs */
+	p = left_seqs->head;
+	while(p) {
+		struct node *next = p->next;
+		list_destroy((struct list *)(p->data));
+		p = next;
+	}
+	list_destroy(left_seqs);
+
+	p = right_seqs->head;
+	while(p) {
+		struct node *next = p->next;
+		list_destroy((struct list *)(p->data));
+		p = next;
+	}
+	list_destroy(right_seqs);
+	
 	return r;
 }
 
@@ -100,15 +119,20 @@ struct list *bst_seqs(struct bst *root) {
 
 	if(!r) {
 		struct list *item;
+		fprintf(stdout, "bst_seqs -- r ");
 		r = list_create();
+		fprintf(stdout, "bst_seqs -- item ");
 		item = list_create();
+		fprintf(stdout, "bst_seqs -- list_append root ");
 		list_append(item, (void *)root, TYPE_VOID_POINTER, 0);
+		fprintf(stdout, "bst_seqs -- list_append item ");
 		list_append(r, (void *)item, TYPE_VOID_POINTER, 0);
 		return r;
 	}
 
 	p = r->head;
 	while(p) {
+		fprintf(stdout, "bst_seqs -- list_insert_front ");
 		list_insert_front((struct list *)(p->data), (void *) root, TYPE_VOID_POINTER, 0);
 		p = p->next;
 	}
@@ -126,13 +150,15 @@ void print_seqs(struct list *r) {
 		struct node *n;
 		struct list *k = (struct list *)(p->data);
 		if(!k || !(k->head)) continue;
-		fprintf(stdout, "inner list %p ", (void *)p);
+		//fprintf(stdout, "inner list %p ", (void *)p);
+		fprintf(stdout, "inner list ");
 		n = k->head;
 		while(n) {
-			fprintf(stdout, "item%p:", (void *)n);
+			//fprintf(stdout, "item%p:", (void *)n);
 			struct bst *b = (struct bst *)(n->data);
 			if(!b) break;
-			fprintf(stdout, "%d(%p) ", b->data, (void *)b);
+			//fprintf(stdout, "%d(%p) ", b->data, (void *)b);
+			fprintf(stdout, "%d ", b->data);
 			n = n->next;
 		}
 		fprintf(stdout, "\n");
@@ -151,8 +177,8 @@ right 7 6
 */
 
 int main(void) {
-	//int arr[] = {5, 3, 2, 4, 7, 6};
-	int arr[] = {3, 2, 4};
+	int arr[] = {5, 3, 2, 4, 7, 6};
+	//int arr[] = {3, 2, 4};
 	struct bst *root = bst_build(arr, sizeof(arr)/sizeof(int));
 	struct list *r;
 	if(!root) return 0;
