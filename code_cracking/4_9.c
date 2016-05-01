@@ -9,53 +9,53 @@ struct list *merge_seq(struct node *left_seq, struct node *right_seq) {
 
 	if(!left_seq && !right_seq) return NULL;
 
-	fprintf(stdout, "merge_seq r ");
+	//fprintf(stdout, "merge_seq r ");
 	r = list_create();
 
 	if(left_seq) {
 		struct list *m = merge_seq(left_seq->next, right_seq);
 		if(!m) {
-			fprintf(stdout, "merge_seq k ");
+			//fprintf(stdout, "merge_seq k ");
 			struct list *k = list_create();
-			fprintf(stdout, "merge_seq list_insert_front left_seq->data ");
+			//fprintf(stdout, "merge_seq list_insert_front left_seq->data ");
 			list_insert_front(k, (void *)(left_seq->data), TYPE_VOID_POINTER, 0);
-			fprintf(stdout, "merge_seq m ");
+			//fprintf(stdout, "merge_seq m ");
 			m = list_create();
-			fprintf(stdout, "merge_seq list_insert_front k ");
+			//fprintf(stdout, "merge_seq list_insert_front k ");
 			list_insert_front(m, (void *) k, TYPE_VOID_POINTER, 0);
 		} else {
 			p = m->head;
 			while(p) {
-				fprintf(stdout, "merge_seq list_insert_front left_seq->data ");
+				//fprintf(stdout, "merge_seq list_insert_front left_seq->data ");
 				list_insert_front((struct list *)(p->data), (void *)(left_seq->data), TYPE_VOID_POINTER, 0);
 				p = p->next;
 			}
 		}
-		fprintf(stdout, "merge_seq list_attach ");
+		//fprintf(stdout, "merge_seq list_attach ");
 		list_attach(r, m);
 	}
 
 	if(right_seq) {
 		struct list *m = merge_seq(left_seq, right_seq->next);
 		if(!m) {
-			fprintf(stdout, "merge_seq k ");
+			//fprintf(stdout, "merge_seq k ");
 			struct list *k = list_create();
-			fprintf(stdout, "merge_seq list_insert_front right_seq->data ");
+			//fprintf(stdout, "merge_seq list_insert_front right_seq->data ");
 			list_insert_front(k, (void *)(right_seq->data), TYPE_VOID_POINTER, 0);
-			fprintf(stdout, "merge_seq m ");
+			//fprintf(stdout, "merge_seq m ");
 			m = list_create();
-			fprintf(stdout, "merge_seq list_insert_front k ");
+			//fprintf(stdout, "merge_seq list_insert_front k ");
 			list_insert_front(m, (void *) k, TYPE_VOID_POINTER, 0);
 		} else {
 			p = m->head;
 			while(p) {
-				fprintf(stdout, "merge_seq list_insert_front right_seq->data ");
+				//fprintf(stdout, "merge_seq list_insert_front right_seq->data ");
 				list_insert_front((struct list *)(p->data), (void *)(right_seq->data), TYPE_VOID_POINTER, 0);
 				p = p->next;
 			}
 		}
 	
-		fprintf(stdout, "merge_seq list_attach ");
+		//fprintf(stdout, "merge_seq list_attach ");
 		list_attach(r, m);
 	}
 
@@ -68,13 +68,13 @@ struct list *merge_seqs(struct list *left_seqs, struct list *right_seqs) {
 	if(!left_seqs) return right_seqs;
 	if(!right_seqs) return left_seqs;
 	
-	fprintf(stdout, "merge_seqs -- r ");
+	//fprintf(stdout, "merge_seqs -- r ");
 	r = list_create();
 	p = left_seqs->head;
 	while(p) {
 		q = right_seqs->head;
 		while(q) {
-			fprintf(stdout, "merge_seqs -- list_attach ");
+			//fprintf(stdout, "merge_seqs -- list_attach ");
 			list_attach(r, merge_seq(((struct list *)(p->data))->head, ((struct list *)(q->data))->head));
 			q = q->next;
 		}
@@ -119,20 +119,20 @@ struct list *bst_seqs(struct bst *root) {
 
 	if(!r) {
 		struct list *item;
-		fprintf(stdout, "bst_seqs -- r ");
+		//fprintf(stdout, "bst_seqs -- r ");
 		r = list_create();
-		fprintf(stdout, "bst_seqs -- item ");
+		//fprintf(stdout, "bst_seqs -- item ");
 		item = list_create();
-		fprintf(stdout, "bst_seqs -- list_append root ");
+		//fprintf(stdout, "bst_seqs -- list_append root ");
 		list_append(item, (void *)root, TYPE_VOID_POINTER, 0);
-		fprintf(stdout, "bst_seqs -- list_append item ");
+		//fprintf(stdout, "bst_seqs -- list_append item ");
 		list_append(r, (void *)item, TYPE_VOID_POINTER, 0);
 		return r;
 	}
 
 	p = r->head;
 	while(p) {
-		fprintf(stdout, "bst_seqs -- list_insert_front ");
+		//fprintf(stdout, "bst_seqs -- list_insert_front ");
 		list_insert_front((struct list *)(p->data), (void *) root, TYPE_VOID_POINTER, 0);
 		p = p->next;
 	}
@@ -143,7 +143,7 @@ void print_seqs(struct list *r) {
 	struct node *p;
 	if(!r || !(r->head)) return;
 
-	fprintf(stdout, "outer list %p\n", (void *)r);
+	//fprintf(stdout, "outer list %p\n", (void *)r);
 
 	p = r->head;
 	while(p) {
@@ -151,7 +151,6 @@ void print_seqs(struct list *r) {
 		struct list *k = (struct list *)(p->data);
 		if(!k || !(k->head)) continue;
 		//fprintf(stdout, "inner list %p ", (void *)p);
-		fprintf(stdout, "inner list ");
 		n = k->head;
 		while(n) {
 			//fprintf(stdout, "item%p:", (void *)n);
@@ -168,22 +167,15 @@ void print_seqs(struct list *r) {
 	list_destroy(r);
 }
 
-/*
-left: 3 2 4
-	  3 4 2
-right 7 6
-3 
-7
-*/
-
 int main(void) {
-	int arr[] = {5, 3, 2, 4, 7, 6};
+	//int arr[] = {5, 3, 2, 4, 7, 6};
 	//int arr[] = {3, 2, 4};
+	int arr[] = {10, 5, 15, 3, 1, 4, 7, 9, 13, 11, 14, 19, 18};
 	struct bst *root = bst_build(arr, sizeof(arr)/sizeof(int));
 	struct list *r;
 	if(!root) return 0;
-	bst_print_inorder(root);
-	fprintf(stdout, "\n");
+	//bst_print_inorder(root);
+	//fprintf(stdout, "\n");
 
 	r = bst_seqs(root);
 	print_seqs(r);
@@ -192,3 +184,10 @@ int main(void) {
 	return 0;
 }
 
+/* output:
+hmeng@hmeng ~/c/cutils/code_cracking$ ./a.out >out
+hmeng@hmeng ~/c/cutils/code_cracking$ wc out 
+  369600  4804800 12566400 out
+*/
+
+// gcc -g3 -Wall -std=c99 -pedantic -iquote ../ ../bst.c 4_9.c ../list.c
