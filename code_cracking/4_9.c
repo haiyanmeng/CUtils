@@ -191,3 +191,21 @@ hmeng@hmeng ~/c/cutils/code_cracking$ wc out
 */
 
 // gcc -g3 -Wall -std=c99 -pedantic -iquote ../ ../bst.c 4_9.c ../list.c
+
+/*
+==29819== Memcheck, a memory error detector
+==29819== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==29819== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==29819== Command: ./a.out
+==29819==
+==29819==
+==29819== HEAP SUMMARY:
+==29819==     in use at exit: 0 bytes in 0 blocks
+==29819==   total heap usage: 6,916,931 allocs, 6,916,931 frees, 152,072,760 bytes allocated
+==29819==
+==29819== All heap blocks were freed -- no leaks are possible
+==29819==
+==29819== For counts of detected and suppressed errors, rerun with: -v
+==29819== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+*/
+
