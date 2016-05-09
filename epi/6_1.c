@@ -1,19 +1,5 @@
 #include <stdio.h>
-
-
-void swap(int *a, int i, int j) {
-	int t = a[i];
-	a[i] = a[j];
-	a[j] = t;
-}
-
-void print_arr(int *a, int n) {
-	int i;
-	for(i=0; i<n; i++) {
-		fprintf(stdout, "%d ", a[i]);
-	}
-	fprintf(stdout, "\n");
-}
+#include "arr_utils.h"
 
 void partition(int *a, int n, int k) {
 	int i = 0, j = n-1;
@@ -23,7 +9,7 @@ void partition(int *a, int n, int k) {
 		while(a[i] < pivot) i++;
 		while(a[j] >= pivot) j--;
 		if(i<j) {
-			swap(a, i, j);
+			arr_swap(a, i, j);
 			i++, j--;
 		}
 	}
@@ -34,7 +20,7 @@ void partition(int *a, int n, int k) {
 		while(a[i] == pivot) i++;
 		while(a[j] > pivot) j--;
 		if(i<j) {
-			swap(a, i, j);
+			arr_swap(a, i, j);
 			i++, j--;
 		}
 	}
@@ -44,18 +30,18 @@ int main(void) {
 	int a[] = {4, 9, 3, 1, 2};
     int b[] = {4, 9, 3, 4, -1, 8, 4, 5, 0, 1, 2};
 
-	print_arr(a, sizeof(a)/sizeof(a[0]));
+	arr_print(a, sizeof(a)/sizeof(a[0]));
     partition(a, sizeof(a)/sizeof(a[0]), 0);
-	print_arr(a, sizeof(a)/sizeof(a[0]));
+	arr_print(a, sizeof(a)/sizeof(a[0]));
 
-	print_arr(b, sizeof(b)/sizeof(b[0]));
+	arr_print(b, sizeof(b)/sizeof(b[0]));
     partition(b, sizeof(b)/sizeof(b[0]), 0);
-	print_arr(b, sizeof(b)/sizeof(b[0]));
+	arr_print(b, sizeof(b)/sizeof(b[0]));
 	return 0;
 }
 
 /*
-gcc -g3 -std=c99 -pedantic -Wall 6_1.c 
+gcc -g3 -std=c99 -pedantic -Wall -iquote ../ 6_1.c ../arr_utils.c
 
 Output:
 4 9 3 1 2 
