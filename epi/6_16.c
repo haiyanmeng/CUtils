@@ -2,34 +2,45 @@
 #include <math.h>
 
 #include "arr_utils.h"
+#include "bit_array.h"
 
 /*
  * @param n: the number of rows of a 
  * @param m: the width of the sub-grid in a
  */
 int verify_sudoku(int (*a)[9], int n, int m) {
-	int h[n+1];
 	int i, j;
+	bit_array *h = bit_array_create(n+1);
 
 	// check each row
 	for(i=0; i<n; i++) {
-		arr_init(h, n+1, 0);	
+		clean_bits(h);
 		for(j=0; j<n; j++) {
-			if(a[i][j] < 1 || a[i][j] > 9) return 0;
+			if(a[i][j] < 1 || a[i][j] > 9) {
+				bit_array_destroy(h);
+				return 0;
+			}
 
-			if(h[a[i][j]] == 1) return 0;
-			else h[a[i][j]] = 1;
+			if(get_bit(h, a[i][j]) == 1) {
+				bit_array_destroy(h);
+				return 0;
+			} else set_bit(h, a[i][j]);
 		}
 	}
 
 	// check each colomn
 	for(i=0; i<n; i++) {
-		arr_init(h, n+1, 0);	
+		clean_bits(h);
 		for(j=0; j<n; j++) {
-			if(a[j][i] < 1 || a[j][i] > 9) return 0;
+			if(a[j][i] < 1 || a[j][i] > 9) {
+				bit_array_destroy(h);
+				return 0;
+			}
 
-			if(h[a[j][i]] == 1) return 0;
-			else h[a[j][i]] = 1;
+			if(get_bit(h, a[j][i]) == 1) {
+				bit_array_destroy(h);
+				return 0;
+			} else set_bit(h, a[j][i]);
 		}
 	}
 
@@ -37,17 +48,23 @@ int verify_sudoku(int (*a)[9], int n, int m) {
 	for(i=0; i<n; i+=m) {
 		for(j=0; j<n; j+=m) {
 			int s, t;
-			arr_init(h, n+1, 0);	
+			clean_bits(h);
 			for(s=0; s<m; s++) {
 				for(t=0; t<m; t++) {
-					if(a[i+s][j+t] < 1 || a[i+s][j+t] > 9) return 0;
-					if(h[a[i+s][j+t]] == 1) return 0;
-					else h[a[i+s][j+t]] = 1;
+					if(a[i+s][j+t] < 1 || a[i+s][j+t] > 9) {
+						bit_array_destroy(h);
+						return 0;
+					}
+					if(get_bit(h, a[i+s][j+t]) == 1) {
+						bit_array_destroy(h);
+						return 0;
+					} else set_bit(h, a[i+s][j+t]);
 				}
 			}
 		}
 	}
 
+	bit_array_destroy(h);
 	return 1;
 }
 
@@ -69,7 +86,7 @@ int main(void) {
 }
 
 /*
-gcc -g3 -Wall -pedantic -std=c99 -lm -iquote ../ 6_16.c  ../arr_utils.c
+gcc -g3 -Wall -pedantic -std=c99 -lm -iquote ../ 6_16.c  ../arr_utils.c ../bit_array.c
 
 Output:
 verify_sudoku = 1
