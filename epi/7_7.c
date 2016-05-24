@@ -15,6 +15,7 @@ void free_strarr(char **t, int c) {
  * @param setn: the length of the char set
  * @param n: the length of each char sequence
  * @param loc: the index of the newly number in the phone number
+ * @param c: the address of an integer which represents the total count of char sequence
 */
 char **add_digit(char **t, const char *set, int setn, int n, int loc, int *c) {
 	if(!t) {
@@ -88,3 +89,8 @@ int main(void) {
 	free_strarr(t, c);
 	return 0;
 }
+
+/*
+gcc -g3 -pedantic -Wall 7_7.c
+the total string num: 3888
+*/
