@@ -73,6 +73,8 @@ int str_arr_insert(str_arr *s, const char *t) {
 	if(!s) return -1;
 
 	if(s->c == s->n) {
+		t = strdup(t);	
+		if(!t) return -1;
 		if(str_arr_expand(s)) return -1;
 	}
 
