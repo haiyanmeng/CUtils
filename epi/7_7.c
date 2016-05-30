@@ -2,13 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void free_strarr(char **t, int c) {
-	int j;
-	for(j=0; j < c; j++) {
-		free(t[j]);
-	}
-	free(t);
-}
+#include "str_arr.h"
 
 /*
  * @param set: a char set
@@ -17,10 +11,9 @@ void free_strarr(char **t, int c) {
  * @param loc: the index of the newly number in the phone number
  * @param c: the address of an integer which represents the total count of char sequence
 */
-char **add_digit(char **t, const char *set, int setn, int n, int loc, int *c) {
-	if(!t) {
+int add_digit(str_arr *t, const char *set, int setn, int n, int loc, int *c) {
+	if(!loc) {
 		int i;
-		t = malloc(sizeof(char *) * setn);
 
 		for(i=0; i < setn; i++) {
 			int j;
@@ -31,66 +24,60 @@ char **add_digit(char **t, const char *set, int setn, int n, int loc, int *c) {
 			s[n-1] = '\0';
 
 			s[loc] = set[i];
-			t[i] = s;
+			str_arr_insert(t, s);
+			free(s);
 		}
 		*c *= setn;
-		return t;
+		return 0;
 	} else {
 		/* copy all the string in t (setn) times, and then append chars inside (set) to each string. */
 		int i, j;
-		char **m = malloc(sizeof(char *) * (*c * setn));
 
-		for(i=0; i<setn; i++) {
+		for(i=0; i<setn-1; i++) {
 			for(j=0; j < *c; j++) {
-				int k = (*c) * i + j;
-				m[k] = strndup(t[j], n);
+				str_arr_insert(t, t->a[j]);
 			}
 		}
 
 		for(i=0; i<setn; i++) {
 			for(j=0; j < *c; j++) {
 				int k = (*c) * i + j;
-				m[k][loc] = set[i];
+				t->a[k][loc] = set[i];
 			}
 		}
 		
-		/* free t */
-		free_strarr(t, *c);
-
 		*c *= setn;
-		return m;
+		return 0;
 	}
 }
 
-char **get_str_set(const char *s, char **t, int *c) {
+str_arr *get_str_set(const char *s, int *c) {
 	static char *map[] = {"0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
 	size_t n = strlen(s);
 	int i;
+	str_arr *arr = str_arr_create(n);
+	if(!arr) return NULL;
+
 	for(i=0; i<n; i++) {
 		int d = s[i] - '0';
 		char *set = map[d];
 		size_t a = strlen(set);
-		t = add_digit(t, set, a, n+1, i, c);
+		add_digit(arr, set, a, n+1, i, c);
 	}
-	return t;
+	return arr;
 }
 
 int main(void) {
-	char **t = NULL;
 	int c = 1;
-	int i;
-	//t = get_str_set("23", t, &c);	
-	t = get_str_set("2276696", t, &c);	
-	for(i=0; i<c; i++) {
-		fprintf(stdout, "%s\n", t[i]);
-	}	
-	fprintf(stdout, "the total string num: %d\n", c);
-
-	free_strarr(t, c);
+	str_arr *arr;
+	//arr = get_str_set("23", &c);	
+	arr = get_str_set("2276696", &c);	
+	str_arr_print(arr);
+	str_arr_destroy(arr);
 	return 0;
 }
 
 /*
-gcc -g3 -pedantic -Wall 7_7.c
+gcc -g3 -pedantic -Wall -iquote ../ 7_7.c ../str_arr.c
 the total string num: 3888
 */

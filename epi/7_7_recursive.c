@@ -82,10 +82,10 @@ int main(void) {
 	char *s = "2276696";
 	size_t n = strlen(s);
 	t = get_str_set(n+1, n-1, s, t, &c);	
+	fprintf(stdout, "the arr has %d elements:\n", c);
 	for(i=0; i<c; i++) {
 		fprintf(stdout, "%s\n", t[i]);
 	}	
-	fprintf(stdout, "Recursive solution, the total string num: %d\n", c);
 
 	free_strarr(t, c);
 	return 0;
